@@ -1,0 +1,17 @@
+workflows:
+  android-release:
+    name: Edith Android Release
+    max_build_duration: 60
+    environment:
+      flutter: stable
+    scripts:
+      - name: Download model (not committed to git)
+        script: |
+          mkdir -p assets/models
+          wget -O assets/models/edith-model.gguf "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/**/*.apk
